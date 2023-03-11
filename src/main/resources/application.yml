@@ -7,9 +7,9 @@ spring:
 #       url: jdbc:mysql://localhost:3306/kol_db?createDatabaseIfNotExist=true
 #       username: root
 #       password:
-       url: jdbc:mysql://ap-northeast.connect.psdb.cloud/viebio_platform?createDatabaseIfNotExist=true&useSSL=false
-       username: 7u1sivyh3eqesf925xa5
-       password: pscale_pw_qAp3EpOfkmyKueP77xXIgwy14KOl4VzWawJhvh00Mza
+       url: jdbc:mysql://ap-northeast.connect.psdb.cloud/viebio_platform?ssl={"rejectUnauthorized":true}
+       username: j8kdvx0qrj24n4kx0dlx
+       password: pscale_pw_UbhTIV5r4OHjpfkDvgWCt3fEyttmiISVY6yr8rkvm7c
        driverClassName: com.mysql.cj.jdbc.Driver
   mvc:
     pathmatch:
@@ -17,8 +17,8 @@ spring:
   mail:
     port: 587
     host: smtp.gmail.com
-    username: forum.fptaptech@gmail.com
-    password: rmdiupuwvzfvguon
+    username: plasform.viebio@gmail.com
+    password: ursninxqucjgwjym
     properties.mail.smtp:
       auth: true
       starttls.enable: true
@@ -28,10 +28,11 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL5Dialect
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        format_sql: true
   security:
     oauth2:
       client:
