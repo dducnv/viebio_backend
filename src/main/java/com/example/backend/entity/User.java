@@ -24,8 +24,9 @@ import java.util.UUID;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue
-    private UUID id;
+    @JsonIgnore
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String avatar;
     @Column(nullable = false)

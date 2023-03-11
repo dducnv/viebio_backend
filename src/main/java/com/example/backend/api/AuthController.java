@@ -3,8 +3,10 @@ package com.example.backend.api;
 import com.example.backend.config.TokenProvider;
 import com.example.backend.dto.*;
 import com.example.backend.service.impl.UserServiceImpl;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,30 +40,33 @@ public class AuthController {
 
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, allowEmptyValue = false, paramType = "header", dataTypeClass = String.class, example = "Bearer access_token"),
-            @ApiImplicitParam(name = "X-Custom-Header", value = "A Custom Header", required = true, allowEmptyValue = false, paramType = "header", dataTypeClass = String.class, example = "my header example")
+            @ApiImplicitParam(name = "Authorization", value = "Access Token", allowEmptyValue = false, paramType = "header", dataTypeClass = String.class, example = "Bearer access_token"),
+            @ApiImplicitParam(name = "X-Custom-Header", value = "A Custom Header", allowEmptyValue = false, paramType = "header", dataTypeClass = String.class, example = "my header example")
     })
     @RequestMapping(value = PREFIX_MY_INFO,method = RequestMethod.GET)
+    @ApiOperation(value = "Lấy thông tin người dùng", notes = "Lấy thông tin người dùng")
     public ResponseEntity<?> myInfo() {
         return ResponseEntity.ok(userService.myInfo());
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, allowEmptyValue = false, paramType = "header", dataTypeClass = String.class, example = "Bearer access_token"),
-            @ApiImplicitParam(name = "X-Custom-Header", value = "A Custom Header", required = true, allowEmptyValue = false, paramType = "header", dataTypeClass = String.class, example = "my header example")
+            @ApiImplicitParam(name = "Authorization", value = "Access Token", allowEmptyValue = false, paramType = "header", dataTypeClass = String.class, example = "Bearer access_token"),
+            @ApiImplicitParam(name = "X-Custom-Header", value = "A Custom Header", allowEmptyValue = false, paramType = "header", dataTypeClass = String.class, example = "my header example")
     })
     @RequestMapping(value = "/admin",method = RequestMethod.GET)
+    @ApiOperation(value = "Quyền truy cập admin", notes = "Test phân quyền hệ thống cho")
     public ResponseEntity<?> admin() {
         return ResponseEntity.ok("This is Admin");
     }
 
     @PreAuthorize("hasRole('USER')")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, allowEmptyValue = false, paramType = "header", dataTypeClass = String.class, example = "Bearer access_token"),
-            @ApiImplicitParam(name = "X-Custom-Header", value = "A Custom Header", required = true, allowEmptyValue = false, paramType = "header", dataTypeClass = String.class, example = "my header example")
+            @ApiImplicitParam(name = "Authorization", value = "Access Token", allowEmptyValue = false, paramType = "header", dataTypeClass = String.class, example = "Bearer access_token"),
+            @ApiImplicitParam(name = "X-Custom-Header", value = "A Custom Header",allowEmptyValue = false, paramType = "header", dataTypeClass = String.class, example = "my header example")
     })
     @RequestMapping(value = "/user",method = RequestMethod.GET)
+    @ApiOperation(value = "Quyền truy cập người dùng", notes = "Test phân quyền hệ thống cho")
     public ResponseEntity<?> user() {
         return ResponseEntity.ok("This is User");
     }
@@ -71,6 +76,7 @@ public class AuthController {
         return ResponseEntity.ok(userService.register(registerDto));
     }
     @RequestMapping(value = PREFIX_LOGIN, produces = "application/json", consumes = "application/json", method = RequestMethod.POST)
+    @ApiOperation(value = "Đăng nhập", notes = "Đăng nhập bằng email và mã otp")
     public ResponseEntity<?> login(@RequestBody @Valid LoginDto loginDto)  {
             final Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -91,18 +97,25 @@ public class AuthController {
     }
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @RequestMapping(value = PREFIX_UPDATE_USER, produces = "application/json", consumes = "application/json", method = RequestMethod.POST)
+    @ApiOperation(value = "Cập nhật thông tin người dùng", notes = "Cập nhật thông tin cơ bản người dùng")
     public ResponseEntity<?> update(@RequestBody @Valid UpdateUserInfoDto updateUserInfoDto)  {
         return ResponseEntity.ok(userService.update(updateUserInfoDto));
     }
+    @ApiOperation(value = "Kiểm tra email đã tồn tại hay chưa", notes = "Dùng để check khi người dùng đăng ký")
+
     @RequestMapping(value = PREFIX_CHECK_EMAIL, produces = "application/json", consumes = "application/json", method = RequestMethod.POST)
     public ResponseEntity<?> checkEmail(@RequestBody @Valid EmailCheckDto emailCheckDto) {
 
         return ResponseEntity.ok(userService.checkUserExistWithEmail(emailCheckDto.getEmail()));
     }
+    @ApiOperation(value = "Kiểm tra username đã tồn tại hay chưa", notes = "Dùng để check khi người dùng đăng ký")
+
     @RequestMapping(value = PREFIX_CHECK_USERNAME, produces = "application/json", consumes = "application/json", method = RequestMethod.POST)
     public ResponseEntity<?> checkUsername(@RequestBody  @Valid UsernameCheckDto usernameCheckDto) {
         return ResponseEntity.ok(userService.checkUserExistWithUsername(usernameCheckDto.getUsername()));
     }
+    @ApiOperation(value = "Lấy mã otp", notes = "Trả về mã otp và thời gian hêt hạn của mã")
+
     @RequestMapping(value = PREFIX_GET_OTP, produces = "application/json", consumes = "application/json", method = RequestMethod.POST)
     public ResponseEntity<?> getOTP(@RequestBody @Valid GetOtpDto getOtpDto) {
         System.out.println(getOtpDto.getEmail());

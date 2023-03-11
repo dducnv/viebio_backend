@@ -19,11 +19,14 @@ import java.util.Set;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
     @Column(name="role_name",nullable = false,unique = true)
     private String roleName;
+    @JsonIgnore
     @Column
     private String description;
+    @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(name = "role_permissions ",
             joinColumns = @JoinColumn(name = "role_id"),
