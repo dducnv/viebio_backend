@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return toUserDTO(user);
     }
     @Override
-    public boolean register(RegisterDto registerDto){
+    public OtpResDto register(RegisterDto registerDto){
         boolean findByEmail = checkUserExistWithEmail(registerDto.getEmail());
         if(findByEmail){
             throw new ApiRequestException("Email đã được sử dụng.");
@@ -76,20 +76,21 @@ public class UserServiceImpl implements UserDetailsService, UserService {
                 .roles(roleSet)
                 .build();
         userRepository.save(userSave);
-        return true;
+        GetOtpDto getOtpDto = new GetOtpDto(registerDto.getEmail());
+        return getOtp(getOtpDto);
     }
     @Override
     public OtpResDto getOtp(GetOtpDto getOtpDto){
         try {
             User user = findUserByEmail(getOtpDto.getEmail());
-            Date expTime = new Date(System.currentTimeMillis() + expireTime);
+            Date expiresIn = new Date(System.currentTimeMillis() + expireTime);
             String password = String.valueOf(GeneratingPassword.generatePassword(12));
             user.setOneTimePassword(passwordEncoder.encode(password));
-            user.setExpireTime(expTime);
+            user.setExpireTime(expiresIn);
             if (!user.isEmailVerify()) {
                 user.setEmailVerify(true);
             }
-            OtpResDto otpResDto = new OtpResDto(expTime,password);
+            OtpResDto otpResDto = new OtpResDto(expiresIn,user.getEmail(),password);
             userRepository.save(user);
             return otpResDto;
         }catch (NullPointerException npx) {

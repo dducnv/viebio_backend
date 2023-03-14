@@ -79,7 +79,7 @@ public class AuthController {
 
     @RequestMapping(value = PREFIX_REGISTER, produces = "application/json", consumes = "application/json", method = RequestMethod.POST)
     public ResponseEntity<?> register(@RequestBody @Valid RegisterDto registerDto) throws Exception {
-        boolean registerStatus = userService.register(registerDto);
+        OtpResDto registerStatus = userService.register(registerDto);
         return ResponseEntity.ok(
                 ApiResDto.builder()
                         .message("Đăng ký tài khoản thành công!")

@@ -7,7 +7,7 @@ public interface UserService {
     UserInfoDto myInfo();
     UserInfoDto update(UpdateUserInfoDto updateUserInfoDto);
     UserInfoDto toUserDTO(User user);
-    boolean register(RegisterDto registerDto);
+    OtpResDto register(RegisterDto registerDto);
     OtpResDto getOtp(GetOtpDto getOtpDto);
     boolean checkUserExistWithEmail(String email);
     boolean checkUserExistWithUsername(String username);

@@ -10,6 +10,7 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 public class OtpResDto {
-    private Date expTime;
+    private Date expiresIn;
+    private String email;
     private String otp;
 }
