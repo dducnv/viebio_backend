@@ -4,12 +4,12 @@ spring:
   jackson:
     time-zone: Asia/Ho_Chi_Minh
   datasource:
-#       url: jdbc:mysql://localhost:3306/kol_db?createDatabaseIfNotExist=true
-#       username: root
-#       password:
-       url: jdbc:mysql://ap-northeast.connect.psdb.cloud/viebio_platform?ssl={"rejectUnauthorized":true}
-       username: j8kdvx0qrj24n4kx0dlx
-       password: pscale_pw_UbhTIV5r4OHjpfkDvgWCt3fEyttmiISVY6yr8rkvm7c
+       url: jdbc:mysql://localhost:3306/kol_db?createDatabaseIfNotExist=true
+       username: root
+       password:
+#       url: jdbc:mysql://ap-northeast.connect.psdb.cloud/viebio_platform?ssl={"rejectUnauthorized":true}
+#       username: j8kdvx0qrj24n4kx0dlx
+#       password: pscale_pw_UbhTIV5r4OHjpfkDvgWCt3fEyttmiISVY6yr8rkvm7c
        driverClassName: com.mysql.cj.jdbc.Driver
   mvc:
     pathmatch:
@@ -28,7 +28,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect

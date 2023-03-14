@@ -1,14 +1,17 @@
 package com.example.backend.service;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
+import com.example.backend.dto.RoleDto;
+import com.example.backend.entity.Role;
+import java.util.List;
 
 
 public interface RoleService {
+    List<RoleDto> findAll();
     boolean save();
     boolean saveAll();
     boolean delete();
+
+//    boolean setRolesForUser(List<RoleDto> roleDtos);
+
+    RoleDto toDto(Role role);
 }

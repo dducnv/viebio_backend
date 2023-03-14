@@ -20,4 +20,15 @@ public class ApiExceptionHandler {
         );
         return new ResponseEntity<>(apiException,badRequest);
     }
+
+    @ExceptionHandler(value = {ApiFormException.class})
+    public ResponseEntity<Object> handleApiFormException(ApiFormException e){
+        HttpStatus badRequest = HttpStatus.UNPROCESSABLE_ENTITY;
+        ApiException apiException = new ApiException(
+                e.getMessage(),
+                badRequest,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        return new ResponseEntity<>(apiException,badRequest);
+    }
 }
