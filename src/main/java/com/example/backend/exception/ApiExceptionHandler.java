@@ -1,5 +1,6 @@
 package com.example.backend.exception;
 
+import com.example.backend.dto.ApiResDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -18,7 +19,10 @@ public class ApiExceptionHandler {
                 badRequest,
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
-        return new ResponseEntity<>(apiException,badRequest);
+        return new ResponseEntity<>(ApiResDto.builder()
+                .message("Lỗi!")
+                .data(apiException)
+                .build(),badRequest);
     }
 
     @ExceptionHandler(value = {ApiFormException.class})
@@ -29,6 +33,9 @@ public class ApiExceptionHandler {
                 badRequest,
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
-        return new ResponseEntity<>(apiException,badRequest);
+        return new ResponseEntity<>(ApiResDto.builder()
+                .message("Lỗi dữ liệu!")
+                .data(apiException)
+                .build(),badRequest);
     }
 }
