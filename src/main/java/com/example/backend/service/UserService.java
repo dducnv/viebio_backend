@@ -6,6 +6,7 @@ import com.example.backend.entity.User;
 public interface UserService {
     UserInfoDto myInfo();
     UserInfoDto update(UpdateUserInfoDto updateUserInfoDto);
+    UserInfoDto findByUsername(String username);
     UserInfoDto toUserDTO(User user);
     OtpResDto register(RegisterDto registerDto);
     OtpResDto getOtp(GetOtpDto getOtpDto);
