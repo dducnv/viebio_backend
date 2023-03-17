@@ -10,20 +10,18 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 @ControllerAdvice
-public class ApiExceptionHandler {
-    @ExceptionHandler(value = {ApiRequestException.class})
-    public ResponseEntity<Object> handleApiRequestException(ApiRequestException e){
-        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+public class ApiFormExceptionHandler {
+    @ExceptionHandler(value = {ApiFormException.class})
+    public ResponseEntity<Object> handleApiFormException(ApiFormException e){
+        HttpStatus badRequest = HttpStatus.UNPROCESSABLE_ENTITY;
         ApiException apiException = new ApiException(
                 e.getMessage(),
                 badRequest,
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
         return new ResponseEntity<>(ApiResDto.builder()
-                .message("Lỗi!")
+                .message("Lỗi dữ liệu!")
                 .data(apiException)
                 .build(),badRequest);
     }
-
-
 }
