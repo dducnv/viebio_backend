@@ -3,6 +3,7 @@ package com.example.backend.service.impl;
 import com.example.backend.dto.*;
 import com.example.backend.entity.Role;
 import com.example.backend.entity.User;
+import com.example.backend.exception.ApiFormException;
 import com.example.backend.exception.ApiRequestException;
 import com.example.backend.repository.RoleRepository;
 import com.example.backend.repository.UserRepository;
@@ -52,15 +53,22 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         userRepository.save(user);
         return toUserDTO(user);
     }
+
+    @Override
+    public UserInfoDto findByUsername(String username) {
+        User user = userRepository.findUserByUsername(username);
+        return toUserDTO(user);
+    }
+
     @Override
     public OtpResDto register(RegisterDto registerDto){
         boolean findByEmail = checkUserExistWithEmail(registerDto.getEmail());
         if(findByEmail){
-            throw new ApiRequestException("Email đã được sử dụng.");
+            throw new ApiFormException("Email đã được sử dụng.");
         }
         boolean findByUsername = checkUserExistWithUsername(registerDto.getUsername());
         if(findByUsername){
-            throw new ApiRequestException("Username đã được sử dụng.");
+            throw new ApiFormException("Username đã được sử dụng.");
         }
         Role role = roleRepository.findByRoleName("USER");
         Set<Role> roleSet = new HashSet<>();
@@ -122,7 +130,6 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         }
         return false;
     }
-
     public User getUserFromToken(){
         Object userInfo = SecurityContextHolder.getContext().getAuthentication().getName();
         return findUserByEmail(userInfo.toString());
@@ -152,7 +159,6 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         });
         return authorities;
     }
-
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findUserByEmail(username);
         if(user == null){
